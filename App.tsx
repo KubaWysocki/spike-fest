@@ -7,7 +7,7 @@ import {
 } from '@react-navigation/native-stack';
 
 import { CustomSetup } from './components/CustomSetup';
-import { Game } from './components/Game';
+import { Game } from './components/Game/Game';
 import { RandomSetup } from './components/RandomSetup';
 import { Start } from './components/Start';
 
