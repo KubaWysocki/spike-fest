@@ -45,6 +45,7 @@ module.exports = {
     'import/no-extraneous-dependencies': 'error',
     'jsx-a11y/label-has-associated-control': 'off',
     '@typescript-eslint/camelcase': 'off',
+    '@typescript-eslint/no-namespace': 'off',
     '@typescript-eslint/explicit-function-return-type': ['error', { allowExpressions: true }],
     'tsdoc/syntax': 'error',
     'import/extensions': ['error', 'ignorePackages', { ts: 'never', tsx: 'never' }],

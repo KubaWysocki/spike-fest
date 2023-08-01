@@ -1,7 +1,9 @@
 import { FC } from 'react';
 import { Button } from 'react-native';
+import { Text } from 'react-native-paper';
 
 import { GameProps, Ordinal } from '../App';
+import { useAppTheme } from '../theme';
 import { CenteredContent } from './CenteredContent';
 import { UsernameInput } from './UsernameInput';
 
@@ -11,12 +13,14 @@ export const CustomSetup: FC<GameProps> = ({
   startGame,
   usernameErrors,
 }) => {
+  const { colors } = useAppTheme();
   const red = usernames.slice(0, 2) as [string, string];
   const blue = usernames.slice(2) as [string, string];
 
   return (
     <>
-      <CenteredContent backgroundColor="red">
+      <CenteredContent backgroundColor={colors.red}>
+        <Text variant="headlineLarge">Enter usernames:</Text>
         {red.map((user, i) => (
           <UsernameInput
             key={i}
@@ -27,7 +31,8 @@ export const CustomSetup: FC<GameProps> = ({
           />
         ))}
       </CenteredContent>
-      <CenteredContent backgroundColor="blue">
+      <CenteredContent backgroundColor={colors.blue}>
+        <Text variant="headlineLarge">Enter usernames:</Text>
         {blue.map((user, i) => (
           <UsernameInput
             key={i}

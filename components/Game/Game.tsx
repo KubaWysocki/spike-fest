@@ -1,10 +1,11 @@
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { Alert, BackHandler, StyleSheet } from 'react-native';
+import { Alert, BackHandler } from 'react-native';
 import { Text } from 'react-native-paper';
 
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { RootStackParamList, Teams } from '../../App';
+import { useAppTheme } from '../../theme';
 import { TeamBoard } from './TeamBoard';
 
 type TeamNames = keyof Teams;
@@ -27,6 +28,8 @@ export const Game: FC<NativeStackScreenProps<RootStackParamList, 'Game'> & { tea
     return () => backHandler.remove();
   }, [navigation]);
 
+  const { colors } = useAppTheme();
+
   const [servingTeam, setServingTeam] = useState<TeamNames>();
   const [rotation, setRotation] = useState(false);
   const [points, setPoints] = useState({
@@ -38,8 +41,20 @@ export const Game: FC<NativeStackScreenProps<RootStackParamList, 'Game'> & { tea
     blue: Math.round(Math.random()),
   });
 
+  const winner = useMemo(() => {
+    if (points.red >= 21 || points.blue >= 21) {
+      if (Math.abs(points.red - points.blue) > 1) {
+        return points.red > points.blue ? 'red' : 'blue';
+      }
+    }
+  }, [points]);
+
   const handleAddPoint = useCallback(
     (scoredTeam: TeamNames) => () => {
+      if (winner) {
+        return;
+      }
+
       if (!servingTeam) {
         return setServingTeam(scoredTeam);
       }
@@ -60,50 +75,49 @@ export const Game: FC<NativeStackScreenProps<RootStackParamList, 'Game'> & { tea
         setRotation(true);
       }
     },
-    [servingTeam],
+    [servingTeam, winner],
   );
 
-  const teamData = useMemo(() => {
-    return {
-      red: {
-        players: teams.red,
-        points: points.red,
-        handleAddPoint: handleAddPoint('red'),
-        servingPlayer: servingTeam === 'red' && teams.red[servingPlayer.red],
-        color: '#EE6258',
-      },
-      blue: {
-        players: teams.blue,
-        points: points.blue,
-        handleAddPoint: handleAddPoint('blue'),
-        servingPlayer: servingTeam === 'blue' && teams.blue[servingPlayer.blue],
-        color: '#A6D4F2',
-      },
-    };
-  }, [teams, points, handleAddPoint, servingPlayer, servingTeam]);
+  const sharedBannersStyle = {
+    textAlign: 'center',
+    backgroundColor: colors[servingTeam || 'red'],
+  } as const;
 
   return (
     <>
-      <TeamBoard {...teamData.red} />
+      <TeamBoard
+        players={teams.red}
+        points={points.red}
+        handleAddPoint={handleAddPoint('red')}
+        servingPlayer={!winner && servingTeam === 'red' && teams.red[servingPlayer.red]}
+        color={colors.red}
+      />
       {!servingTeam ? (
-        <Text variant="displayMedium" style={styles.servePoint}>
+        <Text variant="displayMedium" style={{ textAlign: 'center' }}>
           Serve Point
         </Text>
       ) : (
-        rotation && (
-          <Text
-            variant="headlineMedium"
-            style={{ textAlign: 'center', backgroundColor: teamData[servingTeam].color }}
-          >
-            Rotation 🔄
-          </Text>
-        )
+        <>
+          {winner ? (
+            <Text variant="displayLarge" style={sharedBannersStyle}>
+              Team {winner} wins!
+            </Text>
+          ) : (
+            rotation && (
+              <Text variant="headlineMedium" style={sharedBannersStyle}>
+                Rotation 🔄
+              </Text>
+            )
+          )}
+        </>
       )}
-      <TeamBoard {...teamData.blue} />
+      <TeamBoard
+        players={teams.blue}
+        points={points.blue}
+        handleAddPoint={handleAddPoint('blue')}
+        servingPlayer={!winner && servingTeam === 'blue' && teams.blue[servingPlayer.blue]}
+        color={colors.blue}
+      />
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  servePoint: { textAlign: 'center' },
-});

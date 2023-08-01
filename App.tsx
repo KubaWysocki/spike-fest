@@ -1,4 +1,5 @@
 import { Dispatch, FC, useReducer, useState } from 'react';
+import { PaperProvider } from 'react-native-paper';
 
 import { NavigationContainer } from '@react-navigation/native';
 import {
@@ -10,6 +11,7 @@ import { CustomSetup } from './components/CustomSetup';
 import { Game } from './components/Game/Game';
 import { RandomSetup } from './components/RandomSetup';
 import { Start } from './components/Start';
+import { theme } from './theme';
 
 export type RootStackParamList = {
   Start: undefined;
@@ -72,41 +74,43 @@ const App: FC = () => {
   };
 
   return (
-    <NavigationContainer
-      onStateChange={(state) => {
-        if (state?.index === 0) {
-          setUsername(null);
-          setUsernameErrors(initialUsernameErrors);
-        }
-      }}
-    >
-      <Stack.Navigator initialRouteName="Start">
-        <Stack.Screen name="Start" component={Start} options={{ headerShown: false }} />
-        <Stack.Screen name="Random Setup">
-          {({ navigation }) => (
-            <RandomSetup
-              usernameErrors={usernameErrors}
-              usernames={usernames}
-              setUsername={setUsername}
-              startGame={(teams) => startGame(navigation, teams)}
-            />
-          )}
-        </Stack.Screen>
-        <Stack.Screen name="Custom Setup">
-          {({ navigation }) => (
-            <CustomSetup
-              usernameErrors={usernameErrors}
-              usernames={usernames}
-              setUsername={setUsername}
-              startGame={(teams) => startGame(navigation, teams)}
-            />
-          )}
-        </Stack.Screen>
-        <Stack.Screen name="Game" options={{ headerShown: false }}>
-          {(props) => <Game {...props} teams={teams as Teams} />}
-        </Stack.Screen>
-      </Stack.Navigator>
-    </NavigationContainer>
+    <PaperProvider theme={theme}>
+      <NavigationContainer
+        onStateChange={(state) => {
+          if (state?.index === 0) {
+            setUsername(null);
+            setUsernameErrors(initialUsernameErrors);
+          }
+        }}
+      >
+        <Stack.Navigator initialRouteName="Start">
+          <Stack.Screen name="Start" component={Start} options={{ headerShown: false }} />
+          <Stack.Screen name="Random Setup">
+            {({ navigation }) => (
+              <RandomSetup
+                usernameErrors={usernameErrors}
+                usernames={usernames}
+                setUsername={setUsername}
+                startGame={(teams) => startGame(navigation, teams)}
+              />
+            )}
+          </Stack.Screen>
+          <Stack.Screen name="Custom Setup">
+            {({ navigation }) => (
+              <CustomSetup
+                usernameErrors={usernameErrors}
+                usernames={usernames}
+                setUsername={setUsername}
+                startGame={(teams) => startGame(navigation, teams)}
+              />
+            )}
+          </Stack.Screen>
+          <Stack.Screen name="Game" options={{ headerShown: false }}>
+            {(props) => <Game {...props} teams={teams as Teams} />}
+          </Stack.Screen>
+        </Stack.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
   );
 };
 
