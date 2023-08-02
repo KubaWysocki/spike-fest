@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 import { Button, Text } from 'react-native-paper';
 
 import { CenteredContent } from '../CenteredContent';
@@ -7,9 +7,9 @@ export const TeamBoard: FC<{
   players: [string, string];
   points: number;
   handleAddPoint: () => void;
-  servingPlayer: false | string;
+  quarterback: ReactNode;
   color: string;
-}> = ({ players, points, handleAddPoint, servingPlayer, color }) => {
+}> = ({ players, points, handleAddPoint, quarterback, color }) => {
   return (
     <CenteredContent backgroundColor={color}>
       <Text variant="headlineLarge">
@@ -22,7 +22,7 @@ export const TeamBoard: FC<{
       >
         +
       </Button>
-      {servingPlayer && <Text variant="displaySmall">{servingPlayer} is serving</Text>}
+      {quarterback}
     </CenteredContent>
   );
 };

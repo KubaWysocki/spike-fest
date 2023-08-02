@@ -1,14 +1,15 @@
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { Alert, BackHandler } from 'react-native';
-import { Text } from 'react-native-paper';
 
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { RootStackParamList, Teams } from '../../App';
 import { useAppTheme } from '../../theme';
+import { GameStatus } from './GameStatus';
+import { Quarterback } from './Quarterback';
 import { TeamBoard } from './TeamBoard';
 
-type TeamNames = keyof Teams;
+export type TeamNames = keyof Teams;
 
 export const Game: FC<NativeStackScreenProps<RootStackParamList, 'Game'> & { teams: Teams }> = ({
   teams,
@@ -36,7 +37,7 @@ export const Game: FC<NativeStackScreenProps<RootStackParamList, 'Game'> & { tea
     red: 0,
     blue: 0,
   });
-  const [servingPlayer, setServingPlayer] = useState({
+  const [quarterback, setQuarterback] = useState({
     red: Math.round(Math.random()),
     blue: Math.round(Math.random()),
   });
@@ -60,17 +61,11 @@ export const Game: FC<NativeStackScreenProps<RootStackParamList, 'Game'> & { tea
       }
 
       setServingTeam(scoredTeam);
-      setPoints((points) => ({
-        ...points,
-        [scoredTeam]: points[scoredTeam] + 1,
-      }));
+      setPoints((points) => ({ ...points, [scoredTeam]: points[scoredTeam] + 1 }));
 
       if (scoredTeam !== servingTeam) {
         setRotation(false);
-        setServingPlayer((servingPlayer) => ({
-          ...servingPlayer,
-          [scoredTeam]: Math.abs(servingPlayer[scoredTeam] - 1),
-        }));
+        setQuarterback((state) => ({ ...state, [scoredTeam]: Math.abs(state[scoredTeam] - 1) }));
       } else {
         setRotation(true);
       }
@@ -78,44 +73,25 @@ export const Game: FC<NativeStackScreenProps<RootStackParamList, 'Game'> & { tea
     [servingTeam, winner],
   );
 
-  const sharedBannersStyle = {
-    textAlign: 'center',
-    backgroundColor: colors[servingTeam || 'red'],
-  } as const;
-
   return (
     <>
       <TeamBoard
         players={teams.red}
         points={points.red}
         handleAddPoint={handleAddPoint('red')}
-        servingPlayer={!winner && servingTeam === 'red' && teams.red[servingPlayer.red]}
+        quarterback={
+          <Quarterback player={!winner && servingTeam === 'red' && teams.red[quarterback.red]} />
+        }
         color={colors.red}
       />
-      {!servingTeam ? (
-        <Text variant="displayMedium" style={{ textAlign: 'center' }}>
-          Serve Point
-        </Text>
-      ) : (
-        <>
-          {winner ? (
-            <Text variant="displayLarge" style={sharedBannersStyle}>
-              Team {winner} wins!
-            </Text>
-          ) : (
-            rotation && (
-              <Text variant="headlineMedium" style={sharedBannersStyle}>
-                Rotation 🔄
-              </Text>
-            )
-          )}
-        </>
-      )}
+      <GameStatus servingTeam={servingTeam} winner={winner} rotation={rotation} />
       <TeamBoard
         players={teams.blue}
         points={points.blue}
         handleAddPoint={handleAddPoint('blue')}
-        servingPlayer={!winner && servingTeam === 'blue' && teams.blue[servingPlayer.blue]}
+        quarterback={
+          <Quarterback player={!winner && servingTeam === 'blue' && teams.blue[quarterback.blue]} />
+        }
         color={colors.blue}
       />
     </>

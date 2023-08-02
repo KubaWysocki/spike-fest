@@ -42,7 +42,6 @@ module.exports = {
     'react-hooks/exhaustive-deps': 'warn',
     'react/jsx-filename-extension': [1, { extensions: ['.tsx'] }],
     'import/prefer-default-export': 'off',
-    'import/no-extraneous-dependencies': 'error',
     'jsx-a11y/label-has-associated-control': 'off',
     '@typescript-eslint/camelcase': 'off',
     '@typescript-eslint/no-namespace': 'off',
