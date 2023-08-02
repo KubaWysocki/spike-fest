@@ -10,6 +10,7 @@ import { CenteredContent } from './design/CenteredContent';
 
 export const Start: FC<NativeStackScreenProps<RootStackParamList, 'Start'>> = ({ navigation }) => {
   const { colors } = useAppTheme();
+  const transform = [{ scale: 1.3 }];
   return (
     <CenteredContent>
       <Text variant="displayLarge">SpikeFest</Text>
@@ -25,6 +26,7 @@ export const Start: FC<NativeStackScreenProps<RootStackParamList, 'Start'>> = ({
         mode="contained"
         buttonColor={colors.darkBlue}
         onPress={() => navigation.navigate('Random Setup')}
+        style={{ transform }}
       >
         Random Game!
       </Button>
@@ -32,7 +34,7 @@ export const Start: FC<NativeStackScreenProps<RootStackParamList, 'Start'>> = ({
         mode="contained-tonal"
         buttonColor={colors.blue}
         onPress={() => navigation.navigate('Custom Setup')}
-        style={{ marginTop: '10%' }}
+        style={{ marginTop: '12%', transform }}
       >
         Custom Game!
       </Button>
