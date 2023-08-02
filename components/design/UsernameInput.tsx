@@ -14,7 +14,6 @@ export const UsernameInput: FC<{
   return (
     <>
       <TextInput
-        mode="outlined"
         label={`Player ${ordinal + 1}`}
         style={{ width: '80%', margin: 10 }}
         value={value}
