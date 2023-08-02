@@ -1,10 +1,10 @@
 import { FC } from 'react';
-import { Button } from 'react-native';
 import { Text } from 'react-native-paper';
 
 import { GameProps, Ordinal } from '../../App';
 import { useAppTheme } from '../../theme';
 import { CenteredContent } from '../design/CenteredContent';
+import { StartButton } from '../design/StartButton';
 import { UsernameInput } from '../design/UsernameInput';
 
 export const CustomSetup: FC<GameProps> = ({
@@ -43,7 +43,7 @@ export const CustomSetup: FC<GameProps> = ({
           />
         ))}
       </CenteredContent>
-      <Button title="Start Game" onPress={() => startGame({ red, blue })} color="green" />
+      <StartButton onPress={() => startGame({ red, blue })} />
     </>
   );
 };

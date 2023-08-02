@@ -5,7 +5,6 @@ declare global {
     interface ThemeColors {
       red: string;
       blue: string;
-      green: string;
       darkBlue: string;
     }
   }
@@ -17,7 +16,6 @@ export const theme = {
     ...DefaultTheme.colors,
     red: '#EE6258',
     blue: '#A6D4F2',
-    green: 'green',
     darkBlue: '#508AA8',
   },
 };

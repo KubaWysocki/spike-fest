@@ -1,10 +1,9 @@
 import { FC } from 'react';
-import { Button } from 'react-native';
 import { Text } from 'react-native-paper';
 
 import { GameProps, Ordinal } from '../../App';
-import { useAppTheme } from '../../theme';
 import { CenteredContent } from '../design/CenteredContent';
+import { StartButton } from '../design/StartButton';
 import { UsernameInput } from '../design/UsernameInput';
 
 function shuffle(a: Array<string>): string[] {
@@ -24,7 +23,6 @@ export const RandomSetup: FC<GameProps> = ({
   usernameErrors,
   startGame,
 }) => {
-  const { colors } = useAppTheme();
   return (
     <>
       <CenteredContent>
@@ -40,8 +38,7 @@ export const RandomSetup: FC<GameProps> = ({
           />
         ))}
       </CenteredContent>
-      <Button
-        title="Draw Teams!"
+      <StartButton
         onPress={() => {
           const random = shuffle([...usernames]);
           startGame({
@@ -49,7 +46,6 @@ export const RandomSetup: FC<GameProps> = ({
             blue: random.slice(2) as [string, string],
           });
         }}
-        color={colors.green}
       />
     </>
   );
