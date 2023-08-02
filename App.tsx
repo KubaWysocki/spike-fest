@@ -7,9 +7,9 @@ import {
   createNativeStackNavigator,
 } from '@react-navigation/native-stack';
 
-import { CustomSetup } from './components/CustomSetup';
+import { CustomSetup } from './components/Setups/CustomSetup';
 import { Game } from './components/Game/Game';
-import { RandomSetup } from './components/RandomSetup';
+import { RandomSetup } from './components/Setups/RandomSetup';
 import { Start } from './components/Start';
 import { theme } from './theme';
 
@@ -25,7 +25,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 type Usernames = [string, string, string, string];
 type UsernameErrors = [boolean, boolean, boolean, boolean];
 
-const initialUsernames: Usernames = ['', '', '', ''];
+const initialUsernames: Usernames = ['Kuba', 'Michasia', 'Rfn', 'Szrl'];
 const initialUsernameErrors: UsernameErrors = [false, false, false, false];
 
 export type GameProps = {

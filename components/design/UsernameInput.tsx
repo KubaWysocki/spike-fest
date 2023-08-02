@@ -2,7 +2,7 @@ import { Dispatch, FC } from 'react';
 import { Text } from 'react-native';
 import { TextInput } from 'react-native-paper';
 
-import { UsernameAction } from '../App';
+import { UsernameAction } from '../../App';
 
 export const UsernameInput: FC<{
   value: string;

@@ -2,10 +2,10 @@ import { FC } from 'react';
 import { Button } from 'react-native';
 import { Text } from 'react-native-paper';
 
-import { GameProps, Ordinal } from '../App';
-import { useAppTheme } from '../theme';
-import { CenteredContent } from './CenteredContent';
-import { UsernameInput } from './UsernameInput';
+import { GameProps, Ordinal } from '../../App';
+import { useAppTheme } from '../../theme';
+import { CenteredContent } from '../design/CenteredContent';
+import { UsernameInput } from '../design/UsernameInput';
 
 function shuffle(a: Array<string>): string[] {
   let j, x, i;

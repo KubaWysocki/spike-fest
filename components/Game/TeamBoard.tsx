@@ -1,7 +1,7 @@
 import { FC, ReactNode } from 'react';
 import { Button, Text } from 'react-native-paper';
 
-import { CenteredContent } from '../CenteredContent';
+import { CenteredContent } from '../design/CenteredContent';
 
 export const TeamBoard: FC<{
   players: [string, string];
