@@ -7,11 +7,11 @@ import {
   createNativeStackNavigator,
 } from '@react-navigation/native-stack';
 
+import { theme } from './components/design/theme';
 import { Game } from './components/Game/Game';
 import { CustomSetup } from './components/Setups/CustomSetup';
 import { RandomSetup } from './components/Setups/RandomSetup';
 import { Start } from './components/Start';
-import { theme } from './theme';
 
 export type RootStackParamList = {
   Start: undefined;

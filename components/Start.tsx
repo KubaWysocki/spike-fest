@@ -5,8 +5,8 @@ import { Button, Text } from 'react-native-paper';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { RootStackParamList } from '../App';
-import { useAppTheme } from '../theme';
 import { CenteredContent } from './design/CenteredContent';
+import { useAppTheme } from './design/theme';
 
 export const Start: FC<NativeStackScreenProps<RootStackParamList, 'Start'>> = ({ navigation }) => {
   const { colors } = useAppTheme();

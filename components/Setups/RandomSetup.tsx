@@ -1,8 +1,8 @@
 import { FC } from 'react';
-import { Text } from 'react-native-paper';
 
 import { GameProps, Ordinal } from '../../App';
 import { CenteredContent } from '../design/CenteredContent';
+import { EnterUsernamesHeading } from '../design/EnterUsernamesHeading';
 import { StartButton } from '../design/StartButton';
 import { UsernameInput } from '../design/UsernameInput';
 
@@ -26,7 +26,7 @@ export const RandomSetup: FC<GameProps> = ({
   return (
     <>
       <CenteredContent>
-        <Text variant="headlineLarge">Enter usernames:</Text>
+        <EnterUsernamesHeading />
         {usernames.map((user, i) => (
           <UsernameInput
             key={i}
@@ -34,7 +34,6 @@ export const RandomSetup: FC<GameProps> = ({
             value={user}
             setUsername={setUsername}
             error={usernameErrors[i]}
-            isRandom
           />
         ))}
       </CenteredContent>

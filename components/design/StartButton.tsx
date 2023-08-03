@@ -6,7 +6,7 @@ export const StartButton: FC<{ onPress: () => void }> = ({ onPress }) => (
   <TouchableOpacity
     onPress={onPress}
     activeOpacity={0.9}
-    style={{ backgroundColor: 'green', padding: '3%' }}
+    style={{ backgroundColor: 'green', padding: '2%' }}
   >
     <Text variant="headlineLarge" style={{ textAlign: 'center', color: 'white' }}>
       Start Game

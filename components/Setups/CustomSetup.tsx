@@ -1,10 +1,10 @@
 import { FC } from 'react';
-import { Text } from 'react-native-paper';
 
 import { GameProps, Ordinal } from '../../App';
-import { useAppTheme } from '../../theme';
 import { CenteredContent } from '../design/CenteredContent';
+import { EnterUsernamesHeading } from '../design/EnterUsernamesHeading';
 import { StartButton } from '../design/StartButton';
+import { useAppTheme } from '../design/theme';
 import { UsernameInput } from '../design/UsernameInput';
 
 export const CustomSetup: FC<GameProps> = ({
@@ -14,14 +14,14 @@ export const CustomSetup: FC<GameProps> = ({
   usernameErrors,
 }) => {
   const { colors } = useAppTheme();
-  const red = usernames.slice(0, 2) as [string, string];
-  const blue = usernames.slice(2) as [string, string];
+  const redTeam = usernames.slice(0, 2) as [string, string];
+  const blueTeam = usernames.slice(2) as [string, string];
 
   return (
     <>
       <CenteredContent backgroundColor={colors.red}>
-        <Text variant="headlineLarge">Enter usernames:</Text>
-        {red.map((user, i) => (
+        <EnterUsernamesHeading />
+        {redTeam.map((user, i) => (
           <UsernameInput
             key={i}
             ordinal={i as Ordinal}
@@ -32,8 +32,8 @@ export const CustomSetup: FC<GameProps> = ({
         ))}
       </CenteredContent>
       <CenteredContent backgroundColor={colors.blue}>
-        <Text variant="headlineLarge">Enter usernames:</Text>
-        {blue.map((user, i) => (
+        <EnterUsernamesHeading />
+        {blueTeam.map((user, i) => (
           <UsernameInput
             key={i}
             ordinal={(i + 2) as Ordinal}
@@ -43,7 +43,7 @@ export const CustomSetup: FC<GameProps> = ({
           />
         ))}
       </CenteredContent>
-      <StartButton onPress={() => startGame({ red, blue })} />
+      <StartButton onPress={() => startGame({ red: redTeam, blue: blueTeam })} />
     </>
   );
 };

@@ -4,7 +4,7 @@ import { Alert, BackHandler } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { RootStackParamList, Teams } from '../../App';
-import { useAppTheme } from '../../theme';
+import { useAppTheme } from '../design/theme';
 import { GameStatus } from './GameStatus';
 import { Quarterback } from './Quarterback';
 import { TeamBoard } from './TeamBoard';

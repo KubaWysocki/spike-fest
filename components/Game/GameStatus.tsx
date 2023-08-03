@@ -2,7 +2,7 @@ import { FC } from 'react';
 import * as Animatable from 'react-native-animatable';
 import { Text } from 'react-native-paper';
 
-import { useAppTheme } from '../../theme';
+import { useAppTheme } from '../design/theme';
 import { TeamNames } from './Game';
 
 export const GameStatus: FC<{
