@@ -22,23 +22,40 @@ export const GameStatus: FC<{
   return (
     <Animatable.View
       transition={['height', 'backgroundColor']}
-      style={{ height, backgroundColor: servingTeam ? colors[servingTeam] : '#fff' }}
+      style={{
+        zIndex: 1,
+        height,
+        backgroundColor: servingTeam ? colors[servingTeam] : colors.gray,
+      }}
     >
       {!servingTeam ? (
-        <Text variant="displayMedium" style={textStyle}>
-          Serve Point
-        </Text>
+        <Animatable.View animation="fadeIn">
+          <Text variant="displayMedium" style={textStyle}>
+            Serve Point
+          </Text>
+        </Animatable.View>
       ) : (
         <>
           {winner ? (
-            <Text variant="displayLarge" style={textStyle}>
-              Team {winner} wins!
-            </Text>
+            <Animatable.View animation="fadeIn">
+              <Text variant="displayLarge" style={textStyle}>
+                Team {winner} wins!
+              </Text>
+            </Animatable.View>
           ) : (
             rotation && (
-              <Text variant="headlineMedium" style={textStyle}>
-                Rotation 🔄
-              </Text>
+              <Animatable.View
+                duration={400}
+                animation={{
+                  from: { opacity: 0, translateY: servingTeam === 'red' ? -40 : 40 },
+                  to: { opacity: 1, translateY: servingTeam === 'red' ? -10 : 10 },
+                }}
+                style={{ height, position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 }}
+              >
+                <Text variant="headlineMedium" style={textStyle}>
+                  Rotation 🔄
+                </Text>
+              </Animatable.View>
             )
           )}
         </>
