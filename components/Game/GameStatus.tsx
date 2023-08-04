@@ -1,4 +1,5 @@
-import { FC } from 'react';
+import { FC, useEffect, useRef } from 'react';
+import { View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { Text } from 'react-native-paper';
 
@@ -18,6 +19,19 @@ export const GameStatus: FC<{
   if (!servingTeam) height = 52;
   else if (winner) height = 64;
   else if (rotation) height = 36;
+
+  const firstRotationRef = useRef(false);
+  const animatableRotationRef = useRef<Animatable.View & View>(null);
+  useEffect(() => {
+    if (firstRotationRef.current) {
+      animatableRotationRef.current?.shake?.(1600);
+    }
+    if (rotation) {
+      firstRotationRef.current = true;
+    } else {
+      firstRotationRef.current = false;
+    }
+  });
 
   return (
     <Animatable.View
@@ -45,10 +59,11 @@ export const GameStatus: FC<{
           ) : (
             rotation && (
               <Animatable.View
+                ref={animatableRotationRef}
                 duration={400}
                 animation={{
-                  from: { opacity: 0, translateY: servingTeam === 'red' ? -40 : 40 },
-                  to: { opacity: 1, translateY: servingTeam === 'red' ? -10 : 10 },
+                  from: { opacity: 0, translateY: servingTeam === 'red' ? -30 : 30 },
+                  to: { opacity: 1, translateY: 0 },
                 }}
                 style={{ height, position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 }}
               >
