@@ -1,10 +1,11 @@
 import { FC, ReactNode } from 'react';
 import { Button, Text } from 'react-native-paper';
 
+import { Player } from '../../App';
 import { CenteredContent } from '../design/CenteredContent';
 
 export const TeamBoard: FC<{
-  players: [string, string];
+  players: [Player, Player];
   points: number;
   handleAddPoint: () => void;
   quarterback: ReactNode;
@@ -13,7 +14,7 @@ export const TeamBoard: FC<{
   return (
     <CenteredContent backgroundColor={color}>
       <Text variant="headlineLarge">
-        {players[0]} & {players[1]}
+        {players[0].name} & {players[1].name}
       </Text>
       <Text variant="displayLarge">{points}</Text>
       <Button

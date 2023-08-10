@@ -1,16 +1,17 @@
 import { Dispatch, FC } from 'react';
 import { HelperText, TextInput } from 'react-native-paper';
 
-import { UsernameAction } from '../../App';
+import { Player, PlayerAction } from '../../App';
 import { useAppTheme } from './theme';
 
-export const UsernameInput: FC<{
-  value: string;
+export const PlayerInput: FC<{
+  value: Player;
   ordinal: 0 | 1 | 2 | 3;
-  setUsername: Dispatch<UsernameAction>;
+  setPlayer: Dispatch<PlayerAction>;
   error: boolean;
-}> = ({ value, ordinal, setUsername, error }) => {
+}> = ({ value, ordinal, setPlayer, error }) => {
   const { colors } = useAppTheme();
+
   return (
     <>
       <TextInput
@@ -18,9 +19,12 @@ export const UsernameInput: FC<{
         label={`Player ${ordinal + 1}`}
         style={{ width: '80%', margin: 6, backgroundColor: colors.gray }}
         textColor={colors.onSurface}
-        value={value}
-        onChangeText={(username) => setUsername({ username, ordinal })}
+        value={value.name}
+        onChangeText={(name) => setPlayer({ type: 'username', name, ordinal })}
         error={error}
+        right={
+          <TextInput.Icon icon="camera" size={20} onPress={() => console.warn('open camera')} />
+        }
       />
       <HelperText
         type="error"

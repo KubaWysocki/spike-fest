@@ -1,11 +1,10 @@
-import { Dispatch, FC, useReducer, useState } from 'react';
-import { PaperProvider } from 'react-native-paper';
-
 import { NavigationContainer } from '@react-navigation/native';
 import {
   NativeStackNavigationProp,
   createNativeStackNavigator,
 } from '@react-navigation/native-stack';
+import { Dispatch, FC, useReducer, useState } from 'react';
+import { PaperProvider } from 'react-native-paper';
 
 import { theme } from './components/design/theme';
 import { Game } from './components/Game/Game';
@@ -22,40 +21,53 @@ export type RootStackParamList = {
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-type Usernames = [string, string, string, string];
+export type Player = {
+  name: string;
+  photo?: any;
+};
+
+type Players = [Player, Player, Player, Player];
 type UsernameErrors = [boolean, boolean, boolean, boolean];
 
-const initialUsernames: Usernames = ['', '', '', ''];
+const initialPlayers: Players = [{ name: '' }, { name: '' }, { name: '' }, { name: '' }];
 const initialUsernameErrors: UsernameErrors = [false, false, false, false];
 
 export type GameProps = {
-  usernames: Usernames;
+  players: Players;
   usernameErrors: UsernameErrors;
-  setUsername: Dispatch<UsernameAction>;
+  setPlayers: Dispatch<PlayerAction>;
   startGame: (teams: Teams) => void;
 };
 
 export type Ordinal = 0 | 1 | 2 | 3;
 
-export type UsernameAction = { ordinal: Ordinal; username: string };
+export type PlayerAction = { ordinal: Ordinal } & (
+  | { type: 'username'; name: string }
+  | { type: 'photo'; photo: any }
+);
 
-function usernameReducer(state: Usernames, action: UsernameAction | null): Usernames {
+function teamsReducer(state: Players, action: PlayerAction | null): Players {
   if (action === null) {
-    return initialUsernames;
+    return initialPlayers;
   }
-  const users: Usernames = [...state];
-  users[action.ordinal] = action.username;
-  return users;
+  if (action.type === 'username') {
+    const players: Players = [...state];
+    players[action.ordinal].name = action.name;
+    return players;
+  } else {
+    const players: Players = [...state];
+    players[action.ordinal].photo = action.photo;
+    return players;
+  }
 }
 
 export type Teams = {
-  red: [string, string];
-  blue: [string, string];
+  red: [Player, Player];
+  blue: [Player, Player];
 };
 
 const App: FC = () => {
-  const [usernames, setUsername] = useReducer(usernameReducer, initialUsernames);
-
+  const [players, setPlayers] = useReducer(teamsReducer, initialPlayers);
   const [usernameErrors, setUsernameErrors] = useState<UsernameErrors>(
     new Array(4).fill(false) as UsernameErrors,
   );
@@ -66,8 +78,8 @@ const App: FC = () => {
     navigation: NativeStackNavigationProp<RootStackParamList>,
     teams: Teams,
   ): void => {
-    setUsernameErrors(usernames.map((name) => name === '') as UsernameErrors);
-    if (usernames.every((name) => !!name)) {
+    setUsernameErrors(players.map(({ name }) => name === '') as UsernameErrors);
+    if (players.every(({ name }) => !!name)) {
       setTeams(teams);
       navigation.navigate('Game');
     }
@@ -78,7 +90,7 @@ const App: FC = () => {
       <NavigationContainer
         onStateChange={(state) => {
           if (state?.index === 0) {
-            setUsername(null);
+            setPlayers(null);
             setUsernameErrors(initialUsernameErrors);
           }
         }}
@@ -89,8 +101,8 @@ const App: FC = () => {
             {({ navigation }) => (
               <RandomSetup
                 usernameErrors={usernameErrors}
-                usernames={usernames}
-                setUsername={setUsername}
+                players={players}
+                setPlayers={setPlayers}
                 startGame={(teams) => startGame(navigation, teams)}
               />
             )}
@@ -99,8 +111,8 @@ const App: FC = () => {
             {({ navigation }) => (
               <CustomSetup
                 usernameErrors={usernameErrors}
-                usernames={usernames}
-                setUsername={setUsername}
+                players={players}
+                setPlayers={setPlayers}
                 startGame={(teams) => startGame(navigation, teams)}
               />
             )}

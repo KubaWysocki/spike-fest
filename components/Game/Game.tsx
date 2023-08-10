@@ -1,7 +1,6 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { Alert, BackHandler } from 'react-native';
-
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { RootStackParamList, Teams } from '../../App';
 import { useAppTheme } from '../design/theme';
@@ -17,9 +16,12 @@ export const Game: FC<NativeStackScreenProps<RootStackParamList, 'Game'> & { tea
 }) => {
   useEffect(() => {
     const backAction = (): true => {
+      //replace this with react-native-paper
       Alert.alert('Hold on!', 'Are you sure you want to discard the game?', [
         { text: 'Cancel', onPress: () => null, style: 'destructive' },
         { text: 'YES', onPress: () => navigation.navigate('Start') },
+        //rematch!
+        //re-draw teams!
       ]);
       return true;
     };

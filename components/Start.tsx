@@ -1,8 +1,7 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { FC } from 'react';
 import { Image } from 'react-native';
 import { Button, Text } from 'react-native-paper';
-
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { RootStackParamList } from '../App';
 import { CenteredContent } from './design/CenteredContent';

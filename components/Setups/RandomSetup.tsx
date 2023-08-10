@@ -1,12 +1,12 @@
 import { FC } from 'react';
 
-import { GameProps, Ordinal } from '../../App';
+import { GameProps, Ordinal, Player } from '../../App';
 import { CenteredContent } from '../design/CenteredContent';
 import { EnterUsernamesHeading } from '../design/EnterUsernamesHeading';
+import { PlayerInput } from '../design/PlayerInput';
 import { StartButton } from '../design/StartButton';
-import { UsernameInput } from '../design/UsernameInput';
 
-function shuffle(a: Array<string>): string[] {
+function shuffle(a: Array<Player>): Player[] {
   let j, x, i;
   for (i = a.length - 1; i > 0; i--) {
     j = Math.floor(Math.random() * (i + 1));
@@ -17,32 +17,27 @@ function shuffle(a: Array<string>): string[] {
   return a;
 }
 
-export const RandomSetup: FC<GameProps> = ({
-  usernames,
-  setUsername,
-  usernameErrors,
-  startGame,
-}) => {
+export const RandomSetup: FC<GameProps> = ({ players, setPlayers, usernameErrors, startGame }) => {
   return (
     <>
       <CenteredContent>
         <EnterUsernamesHeading />
-        {usernames.map((user, i) => (
-          <UsernameInput
+        {players.map((player, i) => (
+          <PlayerInput
             key={i}
             ordinal={i as Ordinal}
-            value={user}
-            setUsername={setUsername}
+            value={player}
+            setPlayer={setPlayers}
             error={usernameErrors[i]}
           />
         ))}
       </CenteredContent>
       <StartButton
         onPress={() => {
-          const random = shuffle([...usernames]);
+          const random = shuffle([...players]);
           startGame({
-            red: random.slice(0, 2) as [string, string],
-            blue: random.slice(2) as [string, string],
+            red: random.slice(0, 2) as [Player, Player],
+            blue: random.slice(2) as [Player, Player],
           });
         }}
       />
