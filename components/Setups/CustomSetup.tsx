@@ -7,7 +7,13 @@ import { PlayerInput } from '../design/PlayerInput';
 import { StartButton } from '../design/StartButton';
 import { useAppTheme } from '../design/theme';
 
-export const CustomSetup: FC<GameProps> = ({ players, setPlayers, startGame, usernameErrors }) => {
+export const CustomSetup: FC<GameProps> = ({
+  players,
+  setPlayers,
+  startGame,
+  usernameErrors,
+  setCamera,
+}) => {
   const { colors } = useAppTheme();
   const redTeam = players.slice(0, 2) as [Player, Player];
   const blueTeam = players.slice(2) as [Player, Player];
@@ -23,6 +29,7 @@ export const CustomSetup: FC<GameProps> = ({ players, setPlayers, startGame, use
             value={player}
             setPlayer={setPlayers}
             error={usernameErrors[i]}
+            setCamera={setCamera}
           />
         ))}
       </CenteredContent>
@@ -35,6 +42,7 @@ export const CustomSetup: FC<GameProps> = ({ players, setPlayers, startGame, use
             value={player}
             setPlayer={setPlayers}
             error={usernameErrors[i + 2]}
+            setCamera={setCamera}
           />
         ))}
       </CenteredContent>

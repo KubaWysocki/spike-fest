@@ -17,7 +17,13 @@ function shuffle(a: Array<Player>): Player[] {
   return a;
 }
 
-export const RandomSetup: FC<GameProps> = ({ players, setPlayers, usernameErrors, startGame }) => {
+export const RandomSetup: FC<GameProps> = ({
+  players,
+  setPlayers,
+  usernameErrors,
+  startGame,
+  setCamera,
+}) => {
   return (
     <>
       <CenteredContent>
@@ -29,6 +35,7 @@ export const RandomSetup: FC<GameProps> = ({ players, setPlayers, usernameErrors
             value={player}
             setPlayer={setPlayers}
             error={usernameErrors[i]}
+            setCamera={setCamera}
           />
         ))}
       </CenteredContent>

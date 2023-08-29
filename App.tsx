@@ -6,6 +6,9 @@ import {
 import { Dispatch, FC, useReducer, useState } from 'react';
 import { PaperProvider } from 'react-native-paper';
 
+import { CameraCapturedPicture } from 'expo-camera';
+
+import { PlayerCamera } from './components/design/Camera';
 import { theme } from './components/design/theme';
 import { Game } from './components/Game/Game';
 import { CustomSetup } from './components/Setups/CustomSetup';
@@ -17,13 +20,14 @@ export type RootStackParamList = {
   'Random Setup': undefined;
   'Custom Setup': undefined;
   Game: undefined;
+  'Player Camera': undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export type Player = {
   name: string;
-  photo?: any;
+  photo?: CameraCapturedPicture;
 };
 
 type Players = [Player, Player, Player, Player];
@@ -37,13 +41,14 @@ export type GameProps = {
   usernameErrors: UsernameErrors;
   setPlayers: Dispatch<PlayerAction>;
   startGame: (teams: Teams) => void;
+  setCamera: (ordinal: Ordinal) => void;
 };
 
 export type Ordinal = 0 | 1 | 2 | 3;
 
 export type PlayerAction = { ordinal: Ordinal } & (
   | { type: 'username'; name: string }
-  | { type: 'photo'; photo: any }
+  | { type: 'photo'; photo: CameraCapturedPicture }
 );
 
 function teamsReducer(state: Players, action: PlayerAction | null): Players {
@@ -52,11 +57,11 @@ function teamsReducer(state: Players, action: PlayerAction | null): Players {
   }
   if (action.type === 'username') {
     const players: Players = [...state];
-    players[action.ordinal].name = action.name;
+    players[action.ordinal] = { ...players[action.ordinal], name: action.name };
     return players;
   } else {
     const players: Players = [...state];
-    players[action.ordinal].photo = action.photo;
+    players[action.ordinal] = { ...players[action.ordinal], photo: action.photo };
     return players;
   }
 }
@@ -71,6 +76,7 @@ const App: FC = () => {
   const [usernameErrors, setUsernameErrors] = useState<UsernameErrors>(
     new Array(4).fill(false) as UsernameErrors,
   );
+  const [playerCamera, setPlayerCamera] = useState<Ordinal>();
 
   const [teams, setTeams] = useState<Teams>();
 
@@ -83,6 +89,14 @@ const App: FC = () => {
       setTeams(teams);
       navigation.navigate('Game');
     }
+  };
+
+  const handleCamera = (
+    ordinal: Ordinal,
+    navigation: NativeStackNavigationProp<RootStackParamList>,
+  ): void => {
+    setPlayerCamera(ordinal);
+    navigation.navigate('Player Camera');
   };
 
   return (
@@ -104,6 +118,7 @@ const App: FC = () => {
                 players={players}
                 setPlayers={setPlayers}
                 startGame={(teams) => startGame(navigation, teams)}
+                setCamera={(ordinal) => handleCamera(ordinal, navigation)}
               />
             )}
           </Stack.Screen>
@@ -114,6 +129,20 @@ const App: FC = () => {
                 players={players}
                 setPlayers={setPlayers}
                 startGame={(teams) => startGame(navigation, teams)}
+                setCamera={(ordinal) => handleCamera(ordinal, navigation)}
+              />
+            )}
+          </Stack.Screen>
+          <Stack.Screen name="Player Camera">
+            {({ navigation }) => (
+              <PlayerCamera
+                onBack={() => navigation.goBack()}
+                setPhoto={(photo) => {
+                  if (playerCamera !== undefined) {
+                    setPlayers({ photo, type: 'photo', ordinal: playerCamera });
+                    setPlayerCamera(undefined);
+                  }
+                }}
               />
             )}
           </Stack.Screen>

@@ -75,15 +75,17 @@ export const Game: FC<NativeStackScreenProps<RootStackParamList, 'Game'> & { tea
     [servingTeam, winner],
   );
 
+  const redQuarterback = !winner && servingTeam === 'red' && teams.red[quarterback.red];
+  const blueQuarterback = !winner && servingTeam === 'blue' && teams.blue[quarterback.blue];
+
   return (
     <>
       <TeamBoard
         players={teams.red}
         points={points.red}
         handleAddPoint={handleAddPoint('red')}
-        quarterback={
-          <Quarterback player={!winner && servingTeam === 'red' && teams.red[quarterback.red]} />
-        }
+        quarterback={<Quarterback player={redQuarterback} />}
+        playerImage={redQuarterback && redQuarterback.photo}
         color={colors.red}
       />
       <GameStatus servingTeam={servingTeam} winner={winner} rotation={rotation} />
@@ -91,9 +93,8 @@ export const Game: FC<NativeStackScreenProps<RootStackParamList, 'Game'> & { tea
         players={teams.blue}
         points={points.blue}
         handleAddPoint={handleAddPoint('blue')}
-        quarterback={
-          <Quarterback player={!winner && servingTeam === 'blue' && teams.blue[quarterback.blue]} />
-        }
+        quarterback={<Quarterback player={blueQuarterback} />}
+        playerImage={blueQuarterback && blueQuarterback.photo}
         color={colors.blue}
       />
     </>

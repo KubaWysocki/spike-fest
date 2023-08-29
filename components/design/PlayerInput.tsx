@@ -1,15 +1,16 @@
 import { Dispatch, FC } from 'react';
 import { HelperText, TextInput } from 'react-native-paper';
 
-import { Player, PlayerAction } from '../../App';
+import { Ordinal, Player, PlayerAction } from '../../App';
 import { useAppTheme } from './theme';
 
 export const PlayerInput: FC<{
   value: Player;
-  ordinal: 0 | 1 | 2 | 3;
+  ordinal: Ordinal;
   setPlayer: Dispatch<PlayerAction>;
   error: boolean;
-}> = ({ value, ordinal, setPlayer, error }) => {
+  setCamera: Dispatch<Ordinal>;
+}> = ({ value, ordinal, setPlayer, error, setCamera }) => {
   const { colors } = useAppTheme();
 
   return (
@@ -23,7 +24,12 @@ export const PlayerInput: FC<{
         onChangeText={(name) => setPlayer({ type: 'username', name, ordinal })}
         error={error}
         right={
-          <TextInput.Icon icon="camera" size={20} onPress={() => console.warn('open camera')} />
+          <TextInput.Icon
+            icon="camera"
+            size={20}
+            onPress={() => setCamera(ordinal)}
+            color={value.photo ? 'green' : undefined}
+          />
         }
       />
       <HelperText
